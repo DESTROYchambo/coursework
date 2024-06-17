@@ -4,6 +4,7 @@
 #include <fstream>
 #include <vector>
 
+//eshkere proverka2
 
 using namespace std;
 const string path = "products.txt"; //назва файлу
