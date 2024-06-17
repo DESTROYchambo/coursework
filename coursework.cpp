@@ -1,124 +1,116 @@
-﻿#include <iostream>
-#include <string>
-#include <locale.h>
-#include <fstream>
-#include <vector>
+#include <iostream> 
+#include <string> 
+#include <locale.h> 
+#include <fstream> 
+#include <filesystem> 
 
 using namespace std;
-const string path = "products.txt"; //назва файлу
+const string path = "products.txt"; //назва файлу 
 
 
-//структура товару
-struct item
+//структура товару 
+struct product
 {
-    string name;
+    char name[50];
     float price;
     int amount;
 };
 
-//функція додавання товару
+//функція додавання товару 
+
 void addProduct() {
     setlocale(LC_ALL, "rus");
-
     ofstream fout;
-    fout.open(path, ofstream::app); //відкриття файлу з додаванням інформації
+    fout.open(path, ofstream::app); //відкриття файлу з додаванням інформації 
 
-    if (!fout.is_open()) //перевірка відкриття файлу
+    if (!fout.is_open()) //перевірка відкриття файлу 
     {
         cout << "err" << endl;
         return;
     }
+    
+        product item{};
+        cout << "\n";
+        cout << "Введiть назву товару: ";
+        cin >> item.name;
+        cout << "Введiть цiну товару: ";
+        cin >> item.price;
+        cout << "Введiть кiлькiсть товару: ";
+        cin >> item.amount;
 
-    item items{};
-    cout << "\n";
-    cout << "Введiть назву товару: ";
-    cin >> items.name;
-    cout << "Введiть цiну товару: ";
-    cin >> items.price;
-    cout << "Введiть кiлькiсть товару: ";
-    cin >> items.amount;
-
-    fout << items.name;
-    fout << " ";
-    fout << items.price; //запис товару у файл
-    fout << " ";
-    fout << items.amount;
-    fout << "\n";
+        fout << item.name;
+        fout << " ";
+        fout << item.price;
+        fout << " ";
+        fout << item.amount;
+        fout << "\n";
 
     fout.close();
+
 }
 
-//функція виводу інформації з файлу
+
 void viewProduct() {
     setlocale(LC_ALL, "rus");
 
     ifstream fin;
-    fin.open(path); //відкриття файлу для зчитування інформації
+    fin.open(path); //відкриття файлу для зчитування інформації 
 
-    if (!fin.is_open()) //перевірка відкриття файлу
+    if (!fin.is_open()) //перевірка відкриття файлу 
     {
         cout << "err" << endl;
         return;
     }
-
+    
     string str;
 
-    while (!fin.eof()) { //вивід інформації
+    while (!fin.eof()) {
         str = "";
         getline(fin, str);
         cout << str << endl;
     }
+   
     fin.close();
 }
 
-void deleteProduct() {
+void removeProduct() {
     setlocale(LC_ALL, "rus");
-
-    fstream deleteFile;
-    deleteFile.open(path); //відкриваємо файл для видалення інфоромації
-
-    if (!deleteFile.is_open()) { //перевірка відкриття файлу
-        cout << "err" << endl;
-        return;
-    }
-
-    vector<item>vectorItem;
-
     string slovo;
-    string name;
-    float price;
-    int amount;
-
-
     cout << "Введiть iм'я товара, яке бажаєте видалити: " << endl;
     cin >> slovo;
 
-    while (deleteFile >> name >> price >> amount) { //зчитуємо інформацію в змінні
-        if (name != slovo) {
-            vectorItem.push_back({ name, price, amount });
-        }
-    }
-    deleteFile.close();
-
-    ofstream outFile(path); // відкриваємо файл для перезапису інформації
-    if (outFile.is_open()) {
-        for (const auto& item : vectorItem) {
-            outFile << item.name << " " << item.price << " " << item.amount << "\n";
-        }
-        outFile.close();
-    }
-    else {
+    ifstream inputFile(path); //відкриття і перевірка початкового файлу 
+    if (!inputFile.is_open()) {
         cout << "err" << endl;
         return;
     }
 
+    ofstream tempFile("temp.txt"); //відкриття і перевірка тимчасового файлу
+    if (!tempFile.is_open()) {
+        cout << "err" << endl;
+        inputFile.close();
+        return;
+    }
+
+    //читаємо строки з початкового файлу та записуємо потрібні строки в тимчасовий файл
+    string line;
+    while (getline(inputFile, line)) {
+        if (line.find(slovo) == string::npos) {
+            tempFile << line << endl;
+        }
+    }
+
+    //закриття файлів
+    inputFile.close();
+    tempFile.close();
+    
+    remove(path.c_str()); //видалення початкового файлу
+
+    rename("temp.txt", path.c_str()); //перейменування тимчасового файлу в початковий
 }
 
 
-
-
-
-int main(item items)
+int main(product item)
 {
     setlocale(LC_ALL, "rus");
     using namespace std;
@@ -126,7 +118,7 @@ int main(item items)
     int choise;
     string path = "products.txt";
 
-    //вивід меню
+    //вивід меню 
 
     do {
         cout << " " << endl;
@@ -145,19 +137,13 @@ int main(item items)
 
         switch (choise) {
         case 1: system("cls"); addProduct();  break;
-        case 2: deleteProduct(); break;
+        case 2: removeProduct(); break;
         case 3: system("cls"); cout << "\n"; viewProduct();  break;
         case 4:  cout << " " << endl;  break;
         default: cout << "Не та цифра";
         }
 
-
     } while (choise != 4);
-
-
-
-
-
 
     return 0;
 }
