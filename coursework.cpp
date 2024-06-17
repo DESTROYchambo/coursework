@@ -2,7 +2,7 @@
 #include <string> 
 #include <locale.h> 
 #include <fstream> 
-#include <filesystem> 
+#include <vector> 
 
 using namespace std;
 const string path = "products.txt"; //назва файлу 
