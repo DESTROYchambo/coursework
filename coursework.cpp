@@ -4,8 +4,6 @@
 #include <fstream>
 #include <vector>
 
-//eshkere proverka2
-
 using namespace std;
 const string path = "products.txt"; //назва файлу
 
@@ -20,9 +18,9 @@ struct item
 
 //функція додавання товару
 void addProduct() {
-    
     setlocale(LC_ALL, "rus");
-    ofstream fout;  
+
+    ofstream fout;
     fout.open(path, ofstream::app); //відкриття файлу з додаванням інформації
 
     if (!fout.is_open()) //перевірка відкриття файлу
@@ -42,7 +40,7 @@ void addProduct() {
 
     fout << items.name;
     fout << " ";
-    fout << items.price;
+    fout << items.price; //запис товару у файл
     fout << " ";
     fout << items.amount;
     fout << "\n";
@@ -50,26 +48,26 @@ void addProduct() {
     fout.close();
 }
 
-
+//функція виводу інформації з файлу
 void viewProduct() {
     setlocale(LC_ALL, "rus");
-    
+
     ifstream fin;
     fin.open(path); //відкриття файлу для зчитування інформації
 
     if (!fin.is_open()) //перевірка відкриття файлу
     {
         cout << "err" << endl;
+        return;
     }
 
     string str;
 
-    while (!fin.eof()) {
+    while (!fin.eof()) { //вивід інформації
         str = "";
         getline(fin, str);
         cout << str << endl;
     }
-
     fin.close();
 }
 
@@ -77,10 +75,11 @@ void deleteProduct() {
     setlocale(LC_ALL, "rus");
 
     fstream deleteFile;
-    deleteFile.open(path);
+    deleteFile.open(path); //відкриваємо файл для видалення інфоромації
 
-    if (!deleteFile.is_open()) {
+    if (!deleteFile.is_open()) { //перевірка відкриття файлу
         cout << "err" << endl;
+        return;
     }
 
     vector<item>vectorItem;
@@ -90,17 +89,18 @@ void deleteProduct() {
     float price;
     int amount;
 
+
     cout << "Введiть iм'я товара, яке бажаєте видалити: " << endl;
     cin >> slovo;
 
-    while (deleteFile >> name >> price >> amount) {
+    while (deleteFile >> name >> price >> amount) { //зчитуємо інформацію в змінні
         if (name != slovo) {
-            vectorItem.push_back({ name,price,amount });
+            vectorItem.push_back({ name, price, amount });
         }
     }
     deleteFile.close();
 
-    ofstream outFile(path); // открываем файл для записи (перезаписываем файл)
+    ofstream outFile(path); // відкриваємо файл для перезапису інформації
     if (outFile.is_open()) {
         for (const auto& item : vectorItem) {
             outFile << item.name << " " << item.price << " " << item.amount << "\n";
@@ -108,7 +108,8 @@ void deleteProduct() {
         outFile.close();
     }
     else {
-        std::cerr << "Не удалось открыть файл для записи.\n";
+        cout << "err" << endl;
+        return;
     }
 
 }
@@ -121,40 +122,40 @@ int main(item items)
 {
     setlocale(LC_ALL, "rus");
     using namespace std;
-    
+
     int choise;
     string path = "products.txt";
-   
+
     //вивід меню
-   
-        do {
-            cout << " " << endl;
-            cout << "|-------МЕНЮ--------|" << endl;
-            cout << " " << endl;
-            cout << "1.Додати товар" << endl;
-            cout << "2.Видалити товар" << endl;
-            cout << "3.Продивитися товар" << endl;
-            cout << "4.Вийти" << endl;
-            cout << " " << endl;
-            cout << "|-------------------|" << endl;
-            cout << " " << endl;
 
-            cout << "Ввести вибiр: ";
-            cin >> choise;
+    do {
+        cout << " " << endl;
+        cout << "|-------МЕНЮ--------|" << endl;
+        cout << " " << endl;
+        cout << "1.Додати товар" << endl;
+        cout << "2.Видалити товар" << endl;
+        cout << "3.Продивитися товар" << endl;
+        cout << "4.Вийти" << endl;
+        cout << " " << endl;
+        cout << "|-------------------|" << endl;
+        cout << " " << endl;
 
-            switch (choise) {
-            case 1: system("cls"); addProduct();  break;
-            case 2: deleteProduct(); break;
-            case 3: system("cls"); cout << "\n"; viewProduct();  break;
-            case 4:  cout << " " << endl;  break;
-            default: cout << "Не та цифра";
-            }
+        cout << "Ввести вибiр: ";
+        cin >> choise;
+
+        switch (choise) {
+        case 1: system("cls"); addProduct();  break;
+        case 2: deleteProduct(); break;
+        case 3: system("cls"); cout << "\n"; viewProduct();  break;
+        case 4:  cout << " " << endl;  break;
+        default: cout << "Не та цифра";
+        }
 
 
-        } while (choise != 4);
-    
-    
-    
+    } while (choise != 4);
+
+
+
 
 
 
