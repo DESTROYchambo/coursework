@@ -17,7 +17,6 @@ struct product
 };
 
 //функція додавання товару 
-
 void addProduct() {
     setlocale(LC_ALL, "rus");
     ofstream fout;
@@ -49,7 +48,7 @@ void addProduct() {
 
 }
 
-
+//функція виводу всього товару на екран
 void viewProduct() {
     setlocale(LC_ALL, "rus");
 
@@ -73,6 +72,7 @@ void viewProduct() {
     fin.close();
 }
 
+//функція видалення товару
 void removeProduct() {
     setlocale(LC_ALL, "rus");
     string slovo;
