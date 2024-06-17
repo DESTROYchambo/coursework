@@ -45,13 +45,8 @@ void addProduct() {
     fout << " ";
     fout << items.amount;
     fout << "\n";
-    
-    
-        
-    
 
     fout.close();
-
 }
 
 
