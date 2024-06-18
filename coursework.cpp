@@ -30,7 +30,7 @@ void addProduct() {
     
         product item{};
         cout << "\n";
-        cout << "Введiть назву товару: ";
+        cout << "Введiть назву товару(Англiйською): ";
         cin >> item.name;
         cout << "Введiть цiну товару: ";
         cin >> item.price;
@@ -76,7 +76,7 @@ void viewProduct() {
 void removeProduct() {
     setlocale(LC_ALL, "rus");
     string slovo;
-    cout << "Введiть iм'я товара, яке бажаєте видалити: " << endl;
+    cout << "Введiть iм'я товара, яке бажаєте видалити(Англiйською): " << endl;
     cin >> slovo;
 
     ifstream inputFile(path); //відкриття і перевірка початкового файлу 
